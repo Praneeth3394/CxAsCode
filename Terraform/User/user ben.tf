@@ -5,7 +5,7 @@ resource "genesyscloud_user" "Ben" {
   department      = "Development"
   title           = "Senior Director"
   acd_auto_answer = true
-  profile_skills  = ["Java", "Go"]
+  profile_skills  = ["Cx_As_Code_Skill_Demo", "Cx_As_Code_English"]
   certifications  = ["Certified Developer"]
   addresses {
     other_emails {
@@ -20,7 +20,7 @@ resource "genesyscloud_user" "Ben" {
   }
   
   locations {
-    location_id = "45a09a4d-6d1f-4ead-b369-eb2e67533125"
+    location_id = ""
     notes       = "Office 201"
   }
   employer_info {
