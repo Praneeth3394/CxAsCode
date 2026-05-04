@@ -10,7 +10,7 @@ cloud {
   required_providers {
     genesyscloud = {
       source  = "MyPureCloud/genesyscloud"
-      version = "~> 1.70.0"
+      version = "~> 1.78.0"
     }
   }
  }
