@@ -1,6 +1,6 @@
-resource "genesyscloud_user" "Ben" {
-  email           = "Ben.root@servion.com"
-  name            = "Ben Root"
+resource "genesyscloud_user" "Cx_As_Code_User" {
+  email           = "Cx_As_Code_User@servion.com"
+  name            = "Cx_As_Code_User"
   state           = "active"
   department      = "Development"
   title           = "Senior Director"
@@ -9,7 +9,7 @@ resource "genesyscloud_user" "Ben" {
   certifications  = ["Certified Developer"]
   addresses {
     other_emails {
-      address = "ben@gmail.com"
+      address = "Cx_As_Code_User@gmail.com"
       type    = "HOME"
     }
     phone_numbers {
@@ -20,11 +20,11 @@ resource "genesyscloud_user" "Ben" {
   }
   
   locations {
-    location_id = ""
+    location_id = "deb6cc31-380f-4c7c-ad52-ccdaaee93537"
     notes       = "Office 201"
   }
   employer_info {
-    official_name = "Ben Root"
+    official_name = "Cx_As_Code_User"
     employee_id   = "12345"
     employee_type = "Full-time"
     date_hire     = "2021-03-18"
