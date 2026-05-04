@@ -1,1 +1,794 @@
-
+inboundCall:
+  name: Architect_flow_demo
+  description: This flow is for testing. Do not make changes
+  division: Home
+  startUpRef: "/inboundCall/tasks/task[New Task 1_13]"
+  defaultLanguage: en-us
+  supportedLanguages:
+    en-us:
+      defaultLanguageSkill:
+        noValue: true
+      textToSpeech:
+        defaultEngine:
+          defaultVoice: true
+  initialGreeting:
+    tts: Hello
+  variables:
+    - stringVariable:
+        name: Flow.language
+        initialValue:
+          noValue: true
+  settingsActionDefaults:
+    playAudioOnSilence:
+      timeout:
+        lit:
+          seconds: 40
+    detectSilence:
+      timeout:
+        lit:
+          seconds: 40
+    callData:
+      processingPrompt:
+        noValue: true
+    collectInput:
+      noEntryTimeout:
+        lit:
+          seconds: 5
+    dialByExtension:
+      interDigitTimeout:
+        lit:
+          seconds: 6
+    transferToUser:
+      connectTimeout:
+        noValue: true
+    transferToNumber:
+      connectTimeout:
+        noValue: true
+    transferToGroup:
+      connectTimeout:
+        noValue: true
+    transferToFlowSecure:
+      connectTimeout:
+        lit:
+          seconds: 15
+  settingsErrorHandling:
+    errorHandling:
+      disconnect:
+        none: true
+    preHandlingAudio:
+      tts: Sorry, an error occurred. Please try your call again.
+  settingsMenu:
+    extensionDialingMaxDelay:
+      lit:
+        seconds: 1
+    listenForExtensionDialing:
+      lit: true
+    menuSelectionTimeout:
+      lit:
+        seconds: 10
+    repeatCount:
+      lit: 3
+  settingsPrompts:
+    ensureAudioInPrompts: false
+    promptMediaToValidate:
+      - mediaType: audio
+      - mediaType: tts
+  settingsSpeechRec:
+    completeMatchTimeout:
+      lit:
+        ms: 100
+    incompleteMatchTimeout:
+      lit:
+        ms: 1500
+    maxSpeechLengthTimeout:
+      lit:
+        seconds: 20
+    minConfidenceLevel:
+      lit: 50
+    asrCompanyDir: none
+    asrEnabledOnFlow: true
+    suppressRecording: true
+  tasks:
+    - task:
+        name: New Task 1
+        refId: New Task 1_13
+        variables:
+          - stringVariable:
+              name: Task.ACD_Queue
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.ACD_Queue_Priority
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Agent_Transfer
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Authentication_Flag
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Authentication_Type
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Caller_Is_Staff
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Calling_No
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.CID
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.ContactNoType
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Customer_Category
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Customer_Category_Type
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Customer_Type
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.CustomerEmailID
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.CustomerID
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Dialled_No
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.IBAN_Account
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.IBAN_Status
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.ivr_context
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.ivr_request
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.IVRtype
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.LOB
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.MediaType
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.MENU_TRAVERSAL_PATH
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.NoOfCID
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Prefered_Language
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Product_Name
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.RepeatCaller
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.RMN
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.RMN_Flag
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Selected_Fav_Menu
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Survey_Flag
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.TPI_changed
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.TPIN_Changed_By
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.TPIN_Generated
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.TPIN_register_Type
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Transaction_Type
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+          - stringVariable:
+              name: Task.Transfer_Product
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+        actions:
+          - updateData:
+              name: Update Data
+              statements:
+                - string:
+                    variable: Task.MediaType
+                    value:
+                      lit: Voice
+                - string:
+                    variable: Task.CID
+                    value:
+                      lit: adcb5674adcb5678
+                - string:
+                    variable: Task.CustomerID
+                    value:
+                      lit: "134567"
+                - string:
+                    variable: Task.Calling_No
+                    value:
+                      lit: "+1 470-822-5276"
+                - string:
+                    variable: Task.Dialled_No
+                    value:
+                      lit: "+1 609-930-1712"
+                - string:
+                    variable: Task.Customer_Category
+                    value:
+                      lit: Account
+                - string:
+                    variable: Task.Customer_Type
+                    value:
+                      lit: Account_type
+                - string:
+                    variable: Task.Customer_Category_Type
+                    value:
+                      lit: Type_value
+                - string:
+                    variable: Task.RMN_Flag
+                    value:
+                      lit: Flag_value
+                - string:
+                    variable: Task.Prefered_Language
+                    value:
+                      lit: Arabic
+                - string:
+                    variable: Task.CustomerEmailID
+                    value:
+                      lit: adcb@adcb.com
+                - string:
+                    variable: Task.Caller_Is_Staff
+                    value:
+                      lit: Staff_value
+                - string:
+                    variable: Task.Survey_Flag
+                    value:
+                      lit: Survey_flag id
+                - string:
+                    variable: Task.Authentication_Flag
+                    value:
+                      lit: Flag_value
+                - string:
+                    variable: Task.Authentication_Type
+                    value:
+                      lit: Biometric
+                - string:
+                    variable: Task.LOB
+                    value:
+                      lit: ADCB
+                - string:
+                    variable: Task.NoOfCID
+                    value:
+                      lit: "5"
+                - string:
+                    variable: Task.MENU_TRAVERSAL_PATH
+                    value:
+                      lit: Path_value
+                - string:
+                    variable: Task.ContactNoType
+                    value:
+                      lit: Mobile
+                - string:
+                    variable: Task.ivr_context
+                    value:
+                      lit: context_value
+                - string:
+                    variable: Task.ivr_request
+                    value:
+                      lit: request_value
+                - string:
+                    variable: Task.ACD_Queue_Priority
+                    value:
+                      lit: Best skills matching
+                - string:
+                    variable: Task.ACD_Queue
+                    value:
+                      lit: ADCB_Testing
+                - string:
+                    variable: Task.RMN
+                    value:
+                      lit: RMN_Value
+                - string:
+                    variable: Task.TPIN_register_Type
+                    value:
+                      lit: online
+                - string:
+                    variable: Task.TPIN_Generated
+                    value:
+                      lit: Yes
+                - string:
+                    variable: Task.TPI_changed
+                    value:
+                      lit: yes
+                - string:
+                    variable: Task.TPIN_Changed_By
+                    value:
+                      lit: Customer
+                - string:
+                    variable: Task.Agent_Transfer
+                    value:
+                      lit: "True"
+                - string:
+                    variable: Task.Transaction_Type
+                    value:
+                      lit: Netbanking
+                - string:
+                    variable: Task.Product_Name
+                    value:
+                      lit: Credit card
+                - string:
+                    variable: Task.Transfer_Product
+                    value:
+                      lit: product_value
+                - string:
+                    variable: Task.RepeatCaller
+                    value:
+                      lit: "True"
+                - string:
+                    variable: Task.IBAN_Account
+                    value:
+                      lit: "123456"
+                - string:
+                    variable: Task.IBAN_Status
+                    value:
+                      lit: Active
+                - string:
+                    variable: Task.IVRtype
+                    value:
+                      lit: menu
+                - string:
+                    variable: Task.Selected_Fav_Menu
+                    value:
+                      lit: Account_type
+          - setParticipantData:
+              name: Set Participant Data
+              attributes:
+                - attribute:
+                    name:
+                      lit: mediatype
+                    value:
+                      exp: Task.MediaType
+                - attribute:
+                    name:
+                      lit: CID
+                    value:
+                      exp: Task.CID
+                - attribute:
+                    name:
+                      lit: CustomerID
+                    value:
+                      exp: Task.CustomerID
+                - attribute:
+                    name:
+                      lit: Calling_No
+                    value:
+                      exp: Task.Calling_No
+                - attribute:
+                    name:
+                      lit: Dialled_No
+                    value:
+                      exp: Task.Dialled_No
+                - attribute:
+                    name:
+                      lit: Customer_Category
+                    value:
+                      exp: Task.Customer_Category
+                - attribute:
+                    name:
+                      lit: Customer_Type
+                    value:
+                      exp: Task.Customer_Type
+                - attribute:
+                    name:
+                      lit: Customer_Category_Type
+                    value:
+                      exp: Task.Customer_Category_Type
+                - attribute:
+                    name:
+                      lit: RMN_Flag
+                    value:
+                      exp: Task.RMN_Flag
+                - attribute:
+                    name:
+                      lit: Prefered_Language
+                    value:
+                      exp: Task.Prefered_Language
+                - attribute:
+                    name:
+                      lit: CustomerEmailID
+                    value:
+                      exp: Task.CustomerEmailID
+                - attribute:
+                    name:
+                      lit: Caller_Is_Staff
+                    value:
+                      exp: Task.Caller_Is_Staff
+                - attribute:
+                    name:
+                      lit: Survey_Flag
+                    value:
+                      exp: Task.Survey_Flag
+                - attribute:
+                    name:
+                      lit: Authentication_Flag
+                    value:
+                      exp: Task.Authentication_Flag
+                - attribute:
+                    name:
+                      lit: Authentication_Type
+                    value:
+                      exp: Task.Authentication_Type
+                - attribute:
+                    name:
+                      lit: LOB
+                    value:
+                      exp: Task.LOB
+                - attribute:
+                    name:
+                      lit: NoOfCID
+                    value:
+                      exp: Task.NoOfCID
+                - attribute:
+                    name:
+                      lit: MENU_TRAVERSAL_PATH
+                    value:
+                      exp: Task.MENU_TRAVERSAL_PATH
+                - attribute:
+                    name:
+                      lit: ContactNoType
+                    value:
+                      exp: Task.ContactNoType
+                - attribute:
+                    name:
+                      lit: ivr_context
+                    value:
+                      exp: Task.ivr_context
+                - attribute:
+                    name:
+                      lit: ivr_request
+                    value:
+                      exp: Task.ivr_request
+                - attribute:
+                    name:
+                      lit: ACD_Queue_Priority
+                    value:
+                      exp: Task.ACD_Queue_Priority
+                - attribute:
+                    name:
+                      lit: ACD_Queue
+                    value:
+                      exp: Task.ACD_Queue
+                - attribute:
+                    name:
+                      lit: RMN
+                    value:
+                      exp: Task.RMN
+                - attribute:
+                    name:
+                      lit: TPIN_Register_Type
+                    value:
+                      exp: Task.TPIN_register_Type
+                - attribute:
+                    name:
+                      lit: TPIN_Generated
+                    value:
+                      exp: Task.TPIN_Generated
+                - attribute:
+                    name:
+                      lit: TPIN_Changed
+                    value:
+                      exp: Task.TPI_changed
+                - attribute:
+                    name:
+                      lit: TPIN_Changed_By
+                    value:
+                      exp: Task.TPIN_Changed_By
+                - attribute:
+                    name:
+                      lit: Agent_Transfer
+                    value:
+                      exp: Task.Agent_Transfer
+                - attribute:
+                    name:
+                      lit: Transaction_Type
+                    value:
+                      exp: Task.Transaction_Type
+                - attribute:
+                    name:
+                      lit: Product_Name
+                    value:
+                      exp: Task.Product_Name
+                - attribute:
+                    name:
+                      lit: Transfer_Product
+                    value:
+                      exp: Task.Transfer_Product
+                - attribute:
+                    name:
+                      lit: RepeatCaller
+                    value:
+                      exp: Task.RepeatCaller
+                - attribute:
+                    name:
+                      lit: IBAN_Account
+                    value:
+                      exp: Task.IBAN_Account
+                - attribute:
+                    name:
+                      lit: IBAN_Status
+                    value:
+                      exp: Task.IBAN_Status
+                - attribute:
+                    name:
+                      lit: IVRType
+                    value:
+                      exp: Task.IVRtype
+                - attribute:
+                    name:
+                      lit: Selected_Fav_Menu
+                    value:
+                      exp: Task.Selected_Fav_Menu
+          - playAudio:
+              name: Play Audio
+              audio:
+                exp: AudioPlaybackOptions(Append(ToAudioTTS("Thank you for Calling ADCB."), ToAudioBlank(500)), true)
+          - collectInput:
+              name: Collect Input
+              inputData:
+                var: Flow.language
+              digits:
+                exact: 1
+              interDigitTimeout:
+                noValue: true
+              noEntryTimeout:
+                lit:
+                  seconds: 3
+              inputAudio:
+                exp: AudioPlaybackOptions(Append(ToAudioTTS("Press 1 for English"), ToAudioBlank(500), ToAudioTTS("Press 2 for Tamil"), ToAudioBlank(500), ToAudioTTS("Press 3 for Hindi")), true)
+              acceptJustStar:
+                lit: false
+              acceptJustPound:
+                lit: false
+              verificationType: none
+              outputs:
+                success:
+                  actions:
+                    - switch:
+                        name: Switch
+                        evaluate:
+                          firstTrue:
+                            default:
+                              actions:
+                                - playAudio:
+                                    name: Play Audio
+                                    audio:
+                                      tts: Thank You. this call will disconnect
+                            cases:
+                              - case:
+                                  value:
+                                    exp: Flow.language=="1"
+                                  actions:
+                                    - playAudio:
+                                        name: Play Audio
+                                        audio:
+                                          prompt: Prompt.Press1_eng
+                                    - transferToAcd:
+                                        name: Transfer to ACD
+                                        targetQueue:
+                                          lit:
+                                            name: ADCB_Testing
+                                        preTransferAudio:
+                                          tts: Please wait, while we transfer you to an available agent
+                                        failureTransferAudio:
+                                          tts: There is no agent
+                                        priority:
+                                          lit: 0
+                                        preferredAgents:
+                                          noValue: true
+                                        languageSkill:
+                                          lit:
+                                            name: English
+                                        directAgent:
+                                          noValue: true
+                                        failureOutputs:
+                                          errorType:
+                                            noValue: true
+                                          errorMessage:
+                                            noValue: true
+                              - case:
+                                  value:
+                                    exp: Flow.language=="2"
+                                  actions:
+                                    - playAudio:
+                                        name: Play Audio
+                                        audio:
+                                          prompt: Prompt.Press1_Tam
+                                    - transferToAcd:
+                                        name: Transfer to ACD
+                                        targetQueue:
+                                          lit:
+                                            name: ADCB_Testing
+                                        preTransferAudio:
+                                          tts: Please wait, while we transfer you to an available agent
+                                        failureTransferAudio:
+                                          tts: There is no agent
+                                        priority:
+                                          lit: 0
+                                        preferredAgents:
+                                          noValue: true
+                                        languageSkill:
+                                          lit:
+                                            name: Tamil
+                                        directAgent:
+                                          noValue: true
+                                        failureOutputs:
+                                          errorType:
+                                            noValue: true
+                                          errorMessage:
+                                            noValue: true
+                              - case:
+                                  value:
+                                    exp: Flow.language=="3"
+                                  actions:
+                                    - playAudio:
+                                        name: Play Audio
+                                        audio:
+                                          prompt: Prompt.Press1_hin
+                                    - transferToAcd:
+                                        name: Transfer to ACD
+                                        targetQueue:
+                                          lit:
+                                            name: ADCB_emite_testing
+                                        preTransferAudio:
+                                          tts: Please wait, while we transfer you to an available agent
+                                        failureTransferAudio:
+                                          tts: There is no agent
+                                        priority:
+                                          lit: 0
+                                        preferredAgents:
+                                          noValue: true
+                                        languageSkill:
+                                          lit:
+                                            name: Hindi
+                                        directAgent:
+                                          noValue: true
+                                        failureOutputs:
+                                          errorType:
+                                            noValue: true
+                                          errorMessage:
+                                            noValue: true
+                failure:
+                  actions:
+                    - playAudio:
+                        name: Play Audio
+                        audio:
+                          tts: Thank You. this call will disconnect
+          - disconnect:
+              name: Disconnect
