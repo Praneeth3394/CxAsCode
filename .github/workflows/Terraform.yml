@@ -1,0 +1,109 @@
+name: "Terraform Modular Deployment"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Terraform/**'
+  workflow_dispatch:
+    inputs:
+      destroy:
+        description: 'Set to true to destroy changed modules'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # needed for git diff
+
+      - name: Detect changed Terraform modules
+        id: set-matrix
+        run: |
+          echo "Detecting changed modules..."
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # On manual run, deploy ALL modules
+            MODULES=$(ls Terraform | jq -R -s -c 'split("\n")[:-1]')
+          else
+            # On push, detect changed modules
+            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Terraform/' || true)
+            MODULES=$(echo "$CHANGED" | awk -F/ '{print $2}' | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          fi
+
+          if [[ "$MODULES" == "[]" || -z "$MODULES" ]]; then
+            echo "No Terraform module changes detected. Exiting."
+            echo "matrix=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Modules to deploy: $MODULES"
+          echo "matrix=$MODULES" >> $GITHUB_OUTPUT
+
+  terraform:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        module: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+
+    env:
+      GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID }}
+      GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET }}
+      GENESYSCLOUD_REGION: ${{ secrets.GENESYSCLOUD_REGION }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.4
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform validate
+
+      # ---------- APPLY ----------
+      - name: Terraform Plan (Apply)
+        if: >
+          !contains(github.event.head_commit.message, '[destroy]') &&
+          (github.event_name != 'workflow_dispatch' || github.event.inputs.destroy != true)
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform plan -no-color -out=tfplan
+
+      - name: Terraform Apply
+        if: >
+          !contains(github.event.head_commit.message, '[destroy]') &&
+          (github.event_name != 'workflow_dispatch' || github.event.inputs.destroy != true)
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform apply -auto-approve tfplan
+
+      # ---------- DESTROY ----------
+      - name: Terraform Plan (Destroy)
+        if: >
+          contains(github.event.head_commit.message, '[destroy]') ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.destroy == true)
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform plan -destroy -no-color -out=tfplan-destroy
+
+      - name: Terraform Destroy (Apply destroy plan)
+        if: >
+          contains(github.event.head_commit.message, '[destroy]') ||
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.destroy == true)
+        working-directory: ./Terraform/${{ matrix.module }}
+        run: terraform apply -auto-approve tfplan-destroy
