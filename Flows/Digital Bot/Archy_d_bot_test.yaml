@@ -1,1 +1,318 @@
+digitalBot:
+  name: Example_CICD_Demo_Flow
+  description: This digital bot is for training and testing purpose
+  division: Home
+  startUpRef: "/digitalBot/bots/bot[Initial Greeting_10]"
+  defaultLanguage: en-us
+  supportedLanguages:
+    en-us:
+      defaultLanguageSkill:
+        noValue: true
+  variables:
+    - stringVariable:
+        name: Flow.QsTxt
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: false
+    - stringCollectionVariable:
+        name: Slot.button_input_Collection
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+    - stringVariable:
+        name: Slot.button_static_input
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+    - stringVariable:
+        name: Slot.nameSlot
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+  settingsErrorHandling:
+    errorHandling:
+      exit:
+        none: true
+    enableAgentEscalation:
+      lit: true
+    errorEventHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, an error occurred. One moment, please, while I put you through to someone who can help.\")))"
+    agentEscalationConfirmation:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"You want to speak to an advisor. Is that correct?\")))"
+    agentEscalationHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"One moment, please, and I will put you through to someone.\")))"
+    recognitionFailureEventHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I'm having trouble understanding you. One moment, please, while I put you through to someone who can help.\")))"
+    recognitionFailureEventHandling:
+      exit:
+        none: true
+    agentEscalationHandling:
+      exit:
+        none: true
+  tasks:
+    - task:
+        name: Ask_NameService
+        refId: Ask_NameService_15
+        variables:
+          - integerVariable:
+              name: Task.nameIndex
+              initialValue:
+                noValue: true
+              isInput: false
+              isOutput: false
+        actions:
+          - setParticipantData:
+              name: Set Participant Data
+              attributes:
+                - attribute:
+                    name:
+                      lit: Ask_Name Service
+                    value:
+                      lit: Entry
+          - askForSlot:
+              name: AskName
+              slot:
+                name: nameSlot
+              question:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please tell us your name\")))"
+              customValidation:
+                noValue: true
+              confirmationMode:
+                lit: never
+              customizeNoMatch:
+                noMatchReprompts:
+                  lit:
+                    - exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry the name you have given seems to be invalid\")))"
+              outputs:
+                default:
+                  actions:
+                    - setParticipantData:
+                        name: Set Participant Data
+                        attributes:
+                          - attribute:
+                              name:
+                                lit: Ask_Name Service
+                              value:
+                                lit: Name collected successfully
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Thanks for providing the name\")))"
+                    - endTask:
+                        name: Success
+                        outputPath:
+                          name: default
+                maxNoInputs:
+                  enabled: true
+                  actions:
+                    - setParticipantData:
+                        name: Set Participant Data
+                        attributes:
+                          - attribute:
+                              name:
+                                lit: Ask_Name Service
+                              value:
+                                lit: No Input from Ask Name
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, You have crossed maximum number of limits\")))"
+                    - endTask:
+                        name: NoMatch
+                        outputPath:
+                          name: default
+                maxNoMatches:
+                  enabled: true
+                  actions:
+                    - setParticipantData:
+                        name: Set Participant Data
+                        attributes:
+                          - attribute:
+                              name:
+                                lit: Ask_Name Service
+                              value:
+                                lit: No match from Ask Name
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, You have crossed maximum number of limits\")))"
+                    - endTask:
+                        name: No Input
+                        outputPath:
+                          name: default
+  settingsBotFlow:
+    slotSettings:
+      - slot:
+          name: button_input
+          listPickerType: multiple
+      - slot:
+          name: button_static_input
+          listPickerType: single
+    dynamicSlotTypes:
+      - dynamicSlotType:
+          name: buttons
+          values:
+            lit: []
+          synonyms:
+            noValue: true
+      - dynamicSlotType:
+          name: button_inputType
+          values:
+            lit: []
+          synonyms:
+            noValue: true
+      - dynamicSlotType:
+          name: button_static
+          values:
+            lit: []
+          synonyms:
+            noValue: true
+      - dynamicSlotType:
+          name: button_static_inputType
+          values:
+            lit: []
+          synonyms:
+            noValue: true
+  settingsUserInput:
+    noMatchesMax:
+      lit: 3
+    noInputsMax:
+      lit: 3
+    noInputsTimeout:
+      lit:
+        minutes: 1
+    endOfSessionMessage:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"I have not heard from you in a while, so I am closing this chat, please come back if you need my help again. Thank you.\")))"
+    confirmationRejectionsMax:
+      lit: 3
+    collectionLowConfidenceThreshold:
+      lit: 20
+    collectionHighConfidenceThreshold:
+      lit: 70
+    confirmationLowConfidenceThreshold:
+      lit: 40
+    noMatchApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry.\")))"
+    noInputApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I didn't receive any input from you.\")))"
+    noToConfirmationApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"My mistake.\")))"
+    confirmationNoMatchApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, please input \\\"Yes\\\" or \\\"No\\\".\")))"
+    confirmationNoInputApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I didn't receive any input from you.  Please input \\\"Yes\\\" or \\\"No\\\".\")))"
+  settingsKnowledge:
+    none: true
+  bots:
+    - bot:
+        name: Initial Greeting
+        refId: Initial Greeting_10
+        actions:
+          - communicate:
+              name: Communicate
+              communication:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Hello, Welcome to ChatBot Flow\")))"
+          - callTask:
+              name: Call Task
+              targetTaskRef: "/digitalBot/tasks/task[Ask_NameService_15]"
+              outputs:
+                default:
+                  actions:
+                    - setParticipantData:
+                        name: Set Participant Data
+                        attributes:
+                          - attribute:
+                              name:
+                                lit: Initial Greeting Service
+                              value:
+                                lit: After Name Collection
+          - askForSlot:
+              name: Ask for Slot
+              slot:
+                name: button_static_input
+              question:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(Flow.QsTxt)))"
+              customValidation:
+                noValue: true
+              confirmationMode:
+                lit: never
+              chooser:
+                lit:
+                  presentation:
+                    lit: quickReplies
+                  carousel:
+                    exp: ""
+                  quickReplies:
+                    exp: ""
+                  listPicker:
+                    exp: ""
+              noMatch:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please give me the (please put your slot name here)\")))"
+              outputs:
+                default:
+                  actions:
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(NOT_SET))"
+                maxNoInputs:
+                  enabled: true
+                  actions:
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(NOT_SET))"
+                maxNoMatches:
+                  enabled: true
+                  actions:
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(NOT_SET))"
+          - disconnect:
+              name: Disconnect
+  settingsNaturalLanguageUnderstanding:
+    nluDomainVersion:
+      intents: []
+      entities:
+        - name: button_input
+          type: button_inputType
+        - name: button_static_input
+          type: button_static_inputType
+        - name: nameSlot
+          type: nameSlotType
+      entityTypes:
+        - name: buttons
+          description: The description of the Entity Type "buttons"
+          mechanism:
+            type: DynamicList
+        - name: button_inputType
+          description: The description of the Entity Type "button_inputType"
+          mechanism:
+            type: DynamicList
+        - name: button_static
+          description: The description of the Entity Type "button_static"
+          mechanism:
+            type: DynamicList
+        - name: button_static_inputType
+          description: The description of the Entity Type "button_static_inputType"
+          mechanism:
+            type: DynamicList
+        - name: nameSlotType
+          description: The description of the Entity Type "nameSlotType"
+          mechanism:
+            type: Regex
+            restricted: true
+            items:
+              - value: "[a-z]"
+                synonyms: []
+              - value: "[A-Z]"
+                synonyms: []
+      language: en-us
+      languageVersions: {}
+    mutedUtterances: []
 
