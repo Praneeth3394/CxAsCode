@@ -1,0 +1,88 @@
+name: Publish Architect Flows (main → PROD)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Flows/**'
+  workflow_dispatch:
+
+jobs:
+  publish-prod:
+    runs-on: ubuntu-latest
+    env:
+      ARCHY_VERSION: "latest"
+      FLOWS_DIR: "Flows"
+      PROD_LOCATION: "usw2.pure.cloud"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED to compare commits
+
+      - name: Setup Archy
+        uses: stsmdt/setup-genesyscloud-archy@v1
+        with:
+          archy-version: ${{ env.ARCHY_VERSION }}
+
+      - name: Export PROD credentials
+        run: |
+          echo "CLIENT_ID=${{ secrets.PROD_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "CLIENT_SECRET=${{ secrets.PROD_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "LOCATION=${{ env.PROD_LOCATION }}" >> $GITHUB_ENV
+
+      - name: Detect changed flows
+        id: changed-flows
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            echo "Manual run: publishing all flows."
+            CHANGED_FILES=$(find Flows -type f \( -name "*.yaml" -o -name "*.yml" \) -print)
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+
+            if [[ "$BASE" == "0000000000000000000000000000000000000000" ]]; then
+              BASE="$(git rev-parse "$HEAD~1")"
+            fi
+
+            CHANGED_FILES=$(git diff --name-only "$BASE" "$HEAD" \
+              | grep -E '^Flows/.*\.ya?ml$' || true)
+          fi
+
+          if [[ -z "${CHANGED_FILES}" ]]; then
+            echo "No flow changes detected."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Changed flow files:"
+          echo "$CHANGED_FILES"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          # Write multiline output safely
+          {
+            echo "files<<EOF"
+            echo "$CHANGED_FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+      - name: Publish changed flows to PROD
+        if: steps.changed-flows.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r f; do
+            [[ -z "$f" ]] && continue
+            echo "Publishing: $f"
+            archy publish \
+              --file "$f" \
+              --location "$LOCATION" \
+              --clientId "$CLIENT_ID" \
+              --clientSecret "$CLIENT_SECRET"
+          done <<< "${{ steps.changed-flows.outputs.files }}"
