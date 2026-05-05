@@ -17,4 +17,3 @@ resource "genesyscloud_telephony_providers_edges_site_outbound_route" "example" 
     genesyscloud_telephony_providers_edges_trunkbasesettings.trunk-base.id
   ]
 }
-``
