@@ -1,4 +1,4 @@
-resource "genesyscloud_telephony_providers_edges_site" "example" {
+resource "genesyscloud_telephony_providers_edges_site" "Cx_As_Code_Site" {
   name        = "Cx_As_Code_Site"
   description = "Cx_As_Code_Site"
   location_id = var.location_id
