@@ -7,10 +7,5 @@ resource "genesyscloud_telephony_providers_edges_phone" "Cx_As_Code_phone" {
   line_properties {
     line_address = []
   }
-
   web_rtc_user_id = "9e8e32eb-1b9f-478a-aa51-1762a4eb2aea"
-
-  depends_on = [
-    genesyscloud_telephony_providers_edges_did_pool.example_did_pool
-  ]
 }
