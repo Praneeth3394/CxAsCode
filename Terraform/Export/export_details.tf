@@ -1,12 +1,6 @@
-resource "genesyscloud_tf_export" "export_phone_prerequisites" {
-  directory                  = "./Terraform/Export/generated"
-  export_format              = "hcl"
-  log_permission_errors      = true
-  include_state_file         = false
+resource "genesyscloud_tf_export" "test_export" {
+  directory = "./Terraform/Export/generated"
+  export_format = "hcl"
 
-  include_filter_resources = [
-    "genesyscloud_telephony_providers_edges_site",
-    "genesyscloud_telephony_providers_edges_phonebasesettings",
-    "genesyscloud_user"
-  ]
+  include_filter_resources = ["*"]
 }
