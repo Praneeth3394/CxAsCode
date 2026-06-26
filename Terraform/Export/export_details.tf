@@ -7,7 +7,6 @@ resource "genesyscloud_tf_export" "export_phone_prerequisites" {
   resource_types = [
     "genesyscloud_telephony_providers_edges_site",
     "genesyscloud_telephony_providers_edges_phonebasesettings",
-    "genesyscloud_user",
-    "genesyscloud_auth_role"
+    "genesyscloud_user"
   ]
 }
