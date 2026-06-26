@@ -4,6 +4,7 @@ resource "genesyscloud_tf_export" "test_export" {
   log_permission_errors = true
 
   include_filter_resources = [
-    "genesyscloud_user"
+    "genesyscloud_user",
+    "genesyscloud_auth_role"
   ]
 }
