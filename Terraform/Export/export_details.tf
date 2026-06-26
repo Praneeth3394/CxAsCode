@@ -1,5 +1,5 @@
 resource "genesyscloud_tf_export" "export_phone_prerequisites" {
-  directory             = "./generated"
+  directory             = "./Terraform/Export/generated"
   export_format         = "hcl"
   log_permission_errors = true
   include_state_file    = false
